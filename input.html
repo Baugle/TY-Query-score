@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成绩录入系统 - 炫酷简约版</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #7209b7;
+    --accent: #4cc9f0;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --success: #4caf50;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    min-height: 100vh; padding: 30px 20px; color: var(--dark); line-height: 1.6;
+  }
+  .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: var(--border-radius); box-shadow: var(--box-shadow); overflow: hidden; }
+  header {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white; padding: 25px 30px; text-align: center; position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%); transform: rotate(30deg);
+  }
+  h1 { font-size: 2.5rem; margin-bottom: 10px; position: relative; z-index: 2; letter-spacing: 1px; }
+  .subtitle { font-size: 1.1rem; opacity: 0.9; position: relative; z-index: 2; font-weight: 300; }
+  .main-content { padding: 30px; }
+  .form-header {
+    display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; padding: 20px; background: #f8f9ff;
+    border-radius: var(--border-radius); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  }
+  .input-group { flex: 1; min-width: 250px; }
+  .input-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--gray); }
+  .input-group input {
+    width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; transition: var(--transition); background: white;
+  }
+  .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2); outline: none; }
+  .section-title {
+    display: flex; align-items: center; margin: 35px 0 20px; padding-bottom: 15px; border-bottom: 2px solid #eef2f7;
+    color: var(--primary-dark); font-size: 1.5rem;
+  }
+  .section-title i {
+    margin-right: 12px; background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+  }
+  table {
+    width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: var(--border-radius);
+    overflow: hidden; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); margin-bottom: 30px;
+  }
+  th {
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    color: white; padding: 16px 12px; text-align: center; font-weight: 500; font-size: 1.05rem;
+  }
+  th:first-child { border-top-left-radius: 10px; }
+  th:last-child { border-top-right-radius: 10px; }
+  td { padding: 14px 10px; text-align: center; border-bottom: 1px solid #edf2f7; transition: var(--transition); }
+  tr:nth-child(even) { background-color: #f9fafc; }
+  tr:hover td { background-color: #f1f5ff; }
+  table input {
+    width: 80px; padding: 10px 12px; text-align: center; border: 2px solid #e2e8f0; border-radius: 8px; transition: var(--transition); font-size: 0.95rem; background: white;
+  }
+  table input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3); outline: none; }
+  .strike { color: #a0aec0; text-decoration: line-through; position: relative; }
+  .strike::after {
+    content: "选考"; position: absolute; top: -10px; right: -5px; font-size: 0.7rem; background: var(--accent);
+    color: white; padding: 2px 6px; border-radius: 4px; text-decoration: none;
+  }
+  .btn-container { display: flex; justify-content: center; margin-top: 40px; }
+  .btn {
+    padding: 16px 40px; font-size: 1.1rem; background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white; border: none; border-radius: 50px; cursor: pointer; transition: var(--transition); font-weight: 600; letter-spacing: 0.5px;
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3); position: relative; overflow: hidden;
+  }
+  .btn::after {
+    content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); transition: var(--transition);
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4); }
+  .btn:hover::after { left: 100%; }
+  .btn:active { transform: translateY(1px); }
+  .btn i { margin-right: 10px; }
+  #msg {
+    text-align: center; margin-top: 25px; padding: 15px; border-radius: var(--border-radius); font-weight: 500;
+    transition: var(--transition); opacity: 0; transform: translateY(10px);
+  }
+  #msg.show { opacity: 1; transform: translateY(0); background: rgba(76, 175, 80, 0.1); color: var(--success); }
+  .footer-note { text-align: center; margin-top: 30px; color: var(--gray); font-size: 0.9rem; padding: 0 20px 20px; }
+  @media (max-width: 768px) {
+    .form-header { flex-direction: column; gap: 15px; }
+    table { display: block; overflow-x: auto; }
+    th, td { min-width: 100px; }
+    header { padding: 20px 15px; }
+    h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>成绩录入系统</h1>
+    <p class="subtitle">高效 · 准确 · 便捷的成绩管理平台</p>
+  </header>
+  
+  <div class="main-content">
+    <form id="scoreForm">
+      <div class="form-header">
+        <div class="input-group">
+          <label for="name"><i class="fas fa-user"></i> 姓名</label>
+          <input type="text" id="name" name="name" placeholder="请输入学生姓名" required>
+        </div>
+        <div class="input-group">
+          <label for="id"><i class="fas fa-id-card"></i> 考号</label>
+          <input type="text" id="id" name="id" placeholder="请输入考号" required>
+        </div>
+        <div class="input-group">
+          <label for="school"><i class="fas fa-school"></i> 学校</label>
+          <input type="text" id="school" name="school" placeholder="请输入学校名称" required>
+        </div>
+      </div>
+
+      <!-- 原始成绩 -->
+      <div class="section-title">
+        <i class="fas fa-file-alt"></i>
+        <h3>原始成绩</h3>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>科目</th><th>成绩</th><th>班序</th><th>校序</th><th>联考序</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>语文</td><td><input name="o_语文_score" value="0"></td><td><input name="o_语文_classRank" value="0"></td><td><input name="o_语文_schoolRank" value="0"></td><td><input name="o_语文_examRank" value="0"></td></tr>
+          <tr><td>数学</td><td><input name="o_数学_score" value="0"></td><td><input name="o_数学_classRank" value="0"></td><td><input name="o_数学_schoolRank" value="0"></td><td><input name="o_数学_examRank" value="0"></td></tr>
+          <tr><td>英语</td><td><input name="o_英语_score" value="0"></td><td><input name="o_英语_classRank" value="0"></td><td><input name="o_英语_schoolRank" value="0"></td><td><input name="o_英语_examRank" value="0"></td></tr>
+          <tr><td>政治</td><td><input name="o_政治_score" value="0"></td><td><input name="o_政治_classRank" value="0"></td><td><input name="o_政治_schoolRank" value="0"></td><td><input name="o_政治_examRank" value="0"></td></tr>
+          <tr><td>历史</td><td><input name="o_历史_score" value="0"></td><td><input name="o_历史_classRank" value="0"></td><td><input name="o_历史_schoolRank" value="0"></td><td><input name="o_历史_examRank" value="0"></td></tr>
+          <tr><td>地理</td><td><input name="o_地理_score" value="0"></td><td><input name="o_地理_classRank" value="0"></td><td><input name="o_地理_schoolRank" value="0"></td><td><input name="o_地理_examRank" value="0"></td></tr>
+          <tr><td>物理</td><td><input name="o_物理_score" value="0"></td><td><input name="o_物理_classRank" value="0"></td><td><input name="o_物理_schoolRank" value="0"></td><td><input name="o_物理_examRank" value="0"></td></tr>
+          <tr><td>化学</td><td><input name="o_化学_score" value="0"></td><td><input name="o_化学_classRank" value="0"></td><td><input name="o_化学_schoolRank" value="0"></td><td><input name="o_化学_examRank" value="0"></td></tr>
+          <tr><td>生物</td><td><input name="o_生物_score" value="0"></td><td><input name="o_生物_classRank" value="0"></td><td><input name="o_生物_schoolRank" value="0"></td><td><input name="o_生物_examRank" value="0"></td></tr>
+          <tr><td>总分</td><td><input name="o_总分_score" value="0"></td><td><input name="o_总分_classRank" value="0"></td><td><input name="o_总分_schoolRank" value="0"></td><td><input name="o_总分_examRank" value="0"></td></tr>
+        </tbody>
+      </table>
+
+      <!-- 赋分成绩 -->
+      <div class="section-title">
+        <i class="fas fa-chart-line"></i>
+        <h3>赋分成绩</h3>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>科目</th><th>成绩</th><th>班序</th><th>校序</th><th>联考序</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>语文</td><td><input name="a_语文_score" value="0"></td><td><input name="a_语文_classRank" value="0"></td><td><input name="a_语文_schoolRank" value="0"></td><td><input name="a_语文_examRank" value="0"></td></tr>
+          <tr><td>数学</td><td><input name="a_数学_score" value="0"></td><td><input name="a_数学_classRank" value="0"></td><td><input name="a_数学_schoolRank" value="0"></td><td><input name="a_数学_examRank" value="0"></td></tr>
+          <tr><td>英语</td><td><input name="a_英语_score" value="0"></td><td><input name="a_英语_classRank" value="0"></td><td><input name="a_英语_schoolRank" value="0"></td><td><input name="a_英语_examRank" value="0"></td></tr>
+          <tr><td class="strike">政治</td><td><input name="a_政治_score" value="0"></td><td><input name="a_政治_classRank" value="0"></td><td><input name="a_政治_schoolRank" value="0"></td><td><input name="a_政治_examRank" value="0"></td></tr>
+          <tr><td class="strike">历史</td><td><input name="a_历史_score" value="0"></td><td><input name="a_历史_classRank" value="0"></td><td><input name="a_历史_schoolRank" value="0"></td><td><input name="a_历史_examRank" value="0"></td></tr>
+          <tr><td class="strike">地理</td><td><input name="a_地理_score" value="0"></td><td><input name="a_地理_classRank" value="0"></td><td><input name="a_地理_schoolRank" value="0"></td><td><input name="a_地理_examRank" value="0"></td></tr>
+          <tr><td>物理</td><td><input name="a_物理_score" value="0"></td><td><input name="a_物理_classRank" value="0"></td><td><input name="a_物理_schoolRank" value="0"></td><td><input name="a_物理_examRank" value="0"></td></tr>
+          <tr><td>化学</td><td><input name="a_化学_score" value="0"></td><td><input name="a_化学_classRank" value="0"></td><td><input name="a_化学_schoolRank" value="0"></td><td><input name="a_化学_examRank" value="0"></td></tr>
+          <tr><td>生物</td><td><input name="a_生物_score" value="0"></td><td><input name="a_生物_classRank" value="0"></td><td><input name="a_生物_schoolRank" value="0"></td><td><input name="a_生物_examRank" value="0"></td></tr>
+          <tr><td>总分</td><td><input name="a_总分_score" value="0"></td><td><input name="a_总分_classRank" value="0"></td><td><input name="a_总分_schoolRank" value="0"></td><td><input name="a_总分_examRank" value="0"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="btn-container">
+        <button type="submit" class="btn">
+          <i class="fas fa-save"></i> 提交保存
+        </button>
+      </div>
+      <p id="msg"></p>
+    </form>
+  </div>
+
+  <div class="footer-note">
+    <p>© 2023 成绩录入系统 | 确保每一条数据都准确无误</p>
+  </div>
+</div>
+
+<script>
+document.getElementById("scoreForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const btn = document.querySelector('.btn');
+  const originalBtnText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+  btn.disabled = true;
+
+  const data = Object.fromEntries(new FormData(e.target).entries());
+
+  try {
+    // 关键修复：请求 URL 用相对路径或根路径，不要用服务器文件系统路径
+    const res = await fetch("save.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const text = await res.text(); // 先拿文本，便于调试非 JSON 的报错页
+    let result;
+    try { result = JSON.parse(text); } catch { result = { ok: res.ok, message: text }; }
+
+    const msg = document.getElementById("msg");
+    if (res.ok) {
+      msg.textContent = result.message || "成绩保存成功！";
+      msg.className = "show";
+      msg.style.backgroundColor = "rgba(76, 175, 80, 0.1)";
+      msg.style.color = "#4caf50";
+    } else {
+      msg.textContent = "保存失败：" + (result.message || res.status + " " + res.statusText);
+      msg.className = "show";
+      msg.style.backgroundColor = "rgba(244, 67, 54, 0.1)";
+      msg.style.color = "#f44336";
+    }
+
+    // 控制台输出详细信息，方便线上排查
+    console.log("save.php status:", res.status, res.statusText);
+    console.log("save.php response:", result);
+
+  } catch (error) {
+    console.error(error);
+    const msg = document.getElementById("msg");
+    msg.textContent = "保存失败：网络错误或跨域/反向代理问题";
+    msg.className = "show";
+    msg.style.backgroundColor = "rgba(244, 67, 54, 0.1)";
+    msg.style.color = "#f44336";
+  } finally {
+    btn.innerHTML = originalBtnText;
+    btn.disabled = false;
+  }
+});
+
+// 成绩与排名的简单输入约束
+document.querySelectorAll('input[name$="_score"]').forEach(input => {
+  input.addEventListener('input', function() {
+    const value = parseFloat(this.value);
+    if (isNaN(value) || value < 0) this.value = 0;
+    if (value > 750) this.value = 750;
+  });
+});
+
+document.querySelectorAll('input[name$="_classRank"], input[name$="_schoolRank"], input[name$="_examRank"]').forEach(input => {
+  input.addEventListener('input', function() {
+    const value = parseInt(this.value);
+    if (isNaN(value) || value < 0) this.value = 0;
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成绩查询</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+    }
+    .card {
+        background-color: white;
+        width: 360px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin: 15px auto 0;
+    }
+    h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    select, .input-group {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .input-group {
+        position: relative;
+    }
+    .input-group svg {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        fill: #bbb;
+        transition: fill 0.3s;
+    }
+    .input-group input {
+        width: 100%;
+        padding: 10px 10px 10px 34px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    .input-group.active svg {
+        fill: #409eff;
+    }
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #b3d4fc;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 16px;
+        cursor: not-allowed;
+        transition: background-color 0.3s;
+    }
+    button.active {
+        background-color: #409eff;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h2>联考成绩查询</h2>
+        <select id="examBatch">
+            <option value="">请选择考试批次</option>
+            <option>24-25商丘二高高二下期末</option>
+            <option>24-25商丘二高高一下期末</option>
+            <option>23-24商丘二高高一上期末</option>
+            <option>23-24商丘二高高二上期末</option>
+            <option>24-25海南高一下期末</option>
+            <option>24-25海南高二上期末</option>
+        </select>
+        <div class="input-group" id="inputGroup">
+            <svg viewBox="0 0 1024 1024">
+                <path d="M512 512a256 256 0 1 0-256-256 256 256 0 0 0 256 256z m0 64c-141.385 0-384 71.615-384 213.333V896h768v-106.667c0-141.718-242.615-213.333-384-213.333z"/>
+            </svg>
+            <input type="text" id="examNo" placeholder="请输入准考证号">
+        </div>
+        <button id="queryBtn">成绩查询</button>
+    </div>
+
+<script>
+    const examNo = document.getElementById('examNo');
+    const queryBtn = document.getElementById('queryBtn');
+    const inputGroup = document.getElementById('inputGroup');
+    
+    // 初始状态禁用按钮
+    queryBtn.disabled = true;
+    
+    function checkInput() {
+        if (examNo.value.trim()) {
+            // 输入不为空时启用按钮
+            queryBtn.classList.add('active');
+            inputGroup.classList.add('active');
+            queryBtn.disabled = false;
+        } else {
+            // 输入为空时禁用按钮
+            queryBtn.classList.remove('active');
+            inputGroup.classList.remove('active');
+            queryBtn.disabled = true;
+        }
+    }
+    
+    // 添加输入事件监听
+    examNo.addEventListener('input', checkInput);
+    
+    // 添加按钮点击事件
+    queryBtn.addEventListener('click', function() {
+        if (queryBtn.disabled) return;
+        
+        // 获取考号并编码特殊字符
+        const examNumber = encodeURIComponent(examNo.value.trim());
+        
+        // 跳转到Infomation.html并传递考号参数
+        window.location.href = `Infomation.html?examNo=${examNumber}`;
+    });
+    
+    // 添加回车键提交支持
+    examNo.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !queryBtn.disabled) {
+            const examNumber = encodeURIComponent(examNo.value.trim());
+            window.location.href = `Infomation.html?examNo=${examNumber}`;
+        }
+    });
+</script>
+</body>
+</html>

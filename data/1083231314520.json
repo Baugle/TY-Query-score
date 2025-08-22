@@ -1,0 +1,149 @@
+{
+    "name": "谢战",
+    "id": "1083231314520",
+    "school": "商丘二高",
+    "original": [
+        {
+            "subject": "语文",
+            "score": 111,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "数学",
+            "score": 1,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "英语",
+            "score": 150,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "政治",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "历史",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "地理",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "物理",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "化学",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "生物",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "总分",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        }
+    ],
+    "assigned": [
+        {
+            "subject": "语文",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "数学",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "英语",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "政治",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "历史",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "地理",
+            "score": 0,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "物理",
+            "score": 4,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "化学",
+            "score": 3,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "生物",
+            "score": 2,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        },
+        {
+            "subject": "总分",
+            "score": 1,
+            "classRank": 0,
+            "schoolRank": 0,
+            "examRank": 0
+        }
+    ]
+}

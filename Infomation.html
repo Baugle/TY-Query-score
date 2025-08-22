@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>成绩详情</title>
+<style>
+  :root{
+    --bg: #ffffff;
+    --primary: #1989fa;
+    --muted: #888b90;
+    --line: #efefef;
+    --orange: #ff8c3b;
+    --gray-bg: #cccccc;
+    --container-w: 520px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  html,body{height:100%; margin:0; background:var(--bg); color:#111;}
+  .wrap{
+    width: 95vw;
+    max-width: var(--container-w);
+    margin: 15px auto 40px;
+    background:#fff;
+    position:relative;
+    box-shadow: 0 4px 20px rgba(13,26,38,0.06);
+    border-radius:8px;
+    overflow:hidden;
+  }
+
+  .back {
+    position:absolute;
+    left:14px;
+    top:14px;
+    width:60px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#3f85f4;
+    font-size:18px;
+    user-select:none;
+  }
+
+  .content {
+    padding: 56px 5vw 28px;
+    text-align:center;
+  }
+
+  .ad {  
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .title {
+    color: var(--primary);
+    font-size:18px;
+    font-weight:700;
+    margin-top:8px;
+    margin-bottom:14px;
+  }
+
+  .info {
+    font-size:14px;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+  .info .name{ color:var(--primary); font-weight:600; }
+  .info .id, .info .school { color:var(--muted); }
+
+  .tabs {
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin: 8px 0 18px;
+  }
+  .tab {
+    padding:8px 18px;
+    font-size:14px;
+    cursor:pointer;
+    background:#fff;
+    color:#222;
+    border-radius:0;
+    border:0;
+    box-shadow:none;
+  }
+  .tab.active {
+    background: var(--primary);
+    color:#fff;
+    border-radius:10px 10px 0 0;
+    box-shadow:none;
+  }
+
+  .table-wrap {
+    padding: 0 8px 24px;
+  }
+  table {
+    width:100%;
+    border-collapse:collapse;
+    text-align:center;
+    font-size:15px;
+  }
+  thead th {
+    padding:14px 8px;
+    font-weight:700;
+    color:#111;
+    border-bottom: 2px solid var(--line);
+  }
+  tbody td {
+    padding:14px 8px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+  }
+
+  td:first-child { width:28%; }
+
+  .subject-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    color: #fff;
+    font-weight: 600;
+    min-width: 60px;
+    height: 32px;
+    user-select:none;
+  }
+  .subject-btn.blue {
+    background: var(--primary);
+    border-radius: 0;
+  }
+  .subject-btn.total {
+    border-radius: 0;
+    padding: 8px 12px;
+    height: 36px;
+  }
+  .subject-btn.gray {
+    background: var(--gray-bg);
+    border-radius: 0;
+    position: relative;
+    color: #666;
+  }
+  .subject-btn.gray::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 50%;
+    border-top: 2px solid red;
+    transform: translateY(-50%);
+  }
+
+  .col-score { color:var(--orange); font-weight:700; }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: #1989fa;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(25, 137, 250, 0.2);
+    border-top: 4px solid #1989fa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 15px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width:560px){
+    :root{
+      --container-w: 100vw;
+    }
+    .wrap{
+      width: 95vw;
+      max-width: 100vw;
+      margin: 12px 5vw 30px;
+    }
+    .content{
+      padding: 52px 5vw 20px;
+    }
+    .ad{
+      width: 100%;
+      max-width: 100%;
+    }
+    td:first-child{
+      width:40%;
+      text-align:left;
+      padding-left:10px;
+    }
+    thead th{
+      font-size:13px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap" role="main" aria-labelledby="title">
+  <div class="back" title="返回" id="backBtn">&lt; 返回</div>
+
+  <div class="content">
+    <img src="ico.png" alt="广告" class="ad" id="adImg">
+
+    <div id="title" class="title">成绩详情</div>
+
+    <div class="info" id="studentInfo">
+      <div class="name">加载中...</div>
+      <div class="id">考号: -</div>
+      <div class="school">学校: -</div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="original" role="tab" aria-selected="true">原始成绩</button>
+      <button class="tab" data-tab="assigned" role="tab" aria-selected="false">赋分成绩</button>
+    </div>
+
+    <div class="table-wrap">
+      <table aria-labelledby="title" id="scoreTable">
+        <thead>
+          <tr>
+            <th>科目</th>
+            <th>成绩</th>
+            <th>班序</th>
+            <th>校序</th>
+            <th>联考序</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5">
+              <div class="loading">
+                <div class="loading-spinner"></div>
+                <div>正在加载成绩数据...</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 获取URL参数中的examNo
+  function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+  
+  // 从JSON文件加载数据
+  async function loadStudentData(examNo) {
+    try {
+      // 显示加载状态
+      document.querySelector('.name').textContent = '加载中...';
+      document.querySelector('.id').textContent = `考号: -`;
+      document.querySelector('.school').textContent = `学校: -`;
+      
+      // 构建JSON文件路径
+      const jsonPath = `data/${examNo}.json`;
+      
+      // 获取JSON数据
+      const response = await fetch(jsonPath);
+      if (!response.ok) {
+        throw new Error('未找到该学生的成绩数据');
+      }
+      
+      const data = await response.json();
+      
+      // 更新学生信息
+      document.querySelector('.name').textContent = data.name || '未知';
+      document.querySelector('.id').textContent = `考号: ${data.id || '-'}`;
+      document.querySelector('.school').textContent = data.school || '未知学校';
+      
+      return {
+        original: data.original || [],
+        assigned: data.assigned || []
+      };
+    } catch (error) {
+      console.error('加载数据失败:', error);
+      
+      // 显示错误信息
+      document.querySelector('.name').textContent = '加载失败';
+      document.querySelector('.id').textContent = `错误: ${error.message}`;
+      document.querySelector('.school').textContent = '';
+      
+      // 清空表格并显示错误信息
+      const tbody = document.querySelector('#scoreTable tbody');
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="color: red; padding: 30px; font-weight: bold;">
+            ${error.message}
+          </td>
+        </tr>
+      `;
+      
+      return {
+        original: [],
+        assigned: []
+      };
+    }
+  }
+  
+  // 页面初始化
+  async function initPage() {
+    // 获取考号
+    const examNo = getQueryParam('examNo');
+    
+    if (!examNo) {
+      // 没有考号参数，显示错误
+      document.querySelector('.name').textContent = '缺少考号参数';
+      document.querySelector('.id').textContent = '请从查询页面重新进入';
+      document.querySelector('.school').textContent = '';
+      
+      const tbody = document.querySelector('#scoreTable tbody');
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="color: red; padding: 30px; font-weight: bold;">
+            缺少考号参数，请从查询页面重新进入
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    // 加载学生数据
+    const { original, assigned } = await loadStudentData(examNo);
+    
+    // 定义灰显科目
+    const graySubjects = ['政治', '历史', '地理'];
+    
+    // 渲染表格行
+    function renderRows(data) {
+      const tbody = document.querySelector('#scoreTable tbody');
+      tbody.innerHTML = '';
+      
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="padding: 30px; font-weight: bold;">
+              没有找到成绩数据
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      data.forEach((row) => {
+        const tr = document.createElement('tr');
+        
+        const tdSub = document.createElement('td');
+        const span = document.createElement('span');
+        
+        if (row.subject === '总分') {
+          span.className = 'subject-btn blue total';
+        } else if (graySubjects.includes(row.subject)) {
+          span.className = 'subject-btn gray';
+        } else {
+          span.className = 'subject-btn blue';
+        }
+        
+        span.textContent = row.subject;
+        tdSub.appendChild(span);
+        tr.appendChild(tdSub);
+        
+        // 成绩列
+        const tdScore = document.createElement('td');
+        tdScore.className = 'col-score';
+        tdScore.textContent = row.score;
+        tr.appendChild(tdScore);
+        
+        // 班序列
+        const tdClassRank = document.createElement('td');
+        tdClassRank.textContent = row.classRank;
+        tr.appendChild(tdClassRank);
+        
+        // 校序列
+        const tdSchoolRank = document.createElement('td');
+        tdSchoolRank.textContent = row.schoolRank;
+        tr.appendChild(tdSchoolRank);
+        
+        // 联考序列
+        const tdExamRank = document.createElement('td');
+        tdExamRank.textContent = row.examRank;
+        tr.appendChild(tdExamRank);
+        
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // 初始渲染原始成绩
+    renderRows(original);
+    
+    // 选项卡切换逻辑
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tab = e.currentTarget.getAttribute('data-tab');
+        document.querySelectorAll('.tab').forEach(t => {
+          t.classList.toggle('active', t === e.currentTarget);
+          t.setAttribute('aria-selected', t === e.currentTarget ? 'true' : 'false');
+        });
+        
+        if (tab === 'original') renderRows(original);
+        else if (tab === 'assigned') renderRows(assigned);
+      });
+    });
+  }
+  
+  // 返回按钮事件
+  document.getElementById('backBtn').addEventListener('click', () => {
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = 'index.html'; // 返回到查询页面
+  });
+  
+  // 页面加载完成后初始化
+  window.addEventListener('DOMContentLoaded', initPage);
+</script>
+
+</body>
+</html>
