@@ -5,9 +5,9 @@
 
 # 目录：
 
-- [如何部署]()
-- [天一大联考的优点]()
-- [截图预览]()
+- [如何部署](https://github.com/Baugle/TY-Query-score?tab=readme-ov-file#如何部署)
+- [天一大联考的优点](https://github.com/Baugle/TY-Query-score?tab=readme-ov-file#天一大联考的优点)
+- [截图预览](https://github.com/Baugle/TY-Query-score?tab=readme-ov-file#截图预览)
 
 ---
 
